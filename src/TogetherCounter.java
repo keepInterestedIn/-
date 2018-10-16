@@ -7,13 +7,12 @@ import java.util.concurrent.RecursiveTask;
  * @author Wang
  */
 public class TogetherCounter implements Counter {
-    private int familyNumber;
     private ForkJoinPool pool;
-    private static final int THERSHOLD = 7680;
+    private static final int THERSHOLD = 7660;
 
-    public TogetherCounter() {
-        this.familyNumber = 4;
-        this.pool = new ForkJoinPool(this.familyNumber);
+    TogetherCounter() {
+        int familyNumber = 4;
+        this.pool = new ForkJoinPool(familyNumber);
     }
 
     private static class CounterRiceTask extends RecursiveTask<Long> {

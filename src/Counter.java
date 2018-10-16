@@ -3,6 +3,7 @@
  *
  * 问题场景：数一亿粒米需要多长时间
  *
+ * @author Wang
  */
 public interface Counter {
 

@@ -1,5 +1,10 @@
 /**
  * 数米问题主体测试
+ * 问题：
+ * 1.为什么要用double作为数组类型，都是1或者0的话用int不也可以么，还能节约空间
+ * 2.FamilyCounter类中total >= 0.125e8这个判断的理由是什么
+ * 3.后面两种多线程写法，就本机来看第一种也就是普通的写法块，forl-work写法慢，是因为机器配置因素么
+ * 4.第一种多线程写法会出现运行完成后不能自动中断
  *
  * @author Wang
  */
@@ -14,8 +19,8 @@ public class Main {
         long length = (long)1.2e8;
         double[] riceArray = createArray(length);
         //Counter counter = new FatherCounter();
-        Counter counter = new FamilyCounter();
-        //Counter counter = new TogetherCounter();
+        //Counter counter = new FamilyCounter();
+        Counter counter = new TogetherCounter();
         long startTime = System.currentTimeMillis();
         long value = counter.count(riceArray);
         long endTime = System.currentTimeMillis();
