@@ -1,5 +1,8 @@
+
 /**
+ * 单线程数米
  *
+ * @author Wang
  */
 public class FatherCounter implements Counter {
 

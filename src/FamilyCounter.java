@@ -1,13 +1,19 @@
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.*;
 
-public class FamilyCounter implements Counter{
+/**
+ * 多线程同时数米
+ *
+ * @author Wang
+ */
+public class FamilyCounter implements Counter {
     private int familyMember;
     private ExecutorService pool;
 
-    public FamilyCounter() {
-        this.familyMember = 8;
+    FamilyCounter() {
+        //由于本机电脑上面CPU是四核处理器，因此为4；经过测试设置为8的时候没有4运行速度快
+        this.familyMember = 4;
         this.pool = Executors.newFixedThreadPool(this.familyMember);
     }
 
@@ -15,8 +21,11 @@ public class FamilyCounter implements Counter{
         private double[] riceArray;
         private int from;
         private int to;
-        public CounterRiceTask(double[] riceArray, int from, int to) {
 
+        CounterRiceTask(double[] riceArray, int from, int to) {
+            this.riceArray = riceArray;
+            this.from = from;
+            this.to = to;
         }
 
         /**
@@ -27,7 +36,16 @@ public class FamilyCounter implements Counter{
          */
         @Override
         public Long call() throws Exception {
-            return null;
+            long total = 0;
+            for (int i = from; i < to; i++) {
+                if (riceArray[i] == 1) {
+                    total++;
+                }
+                if (total >= 0.125e8) {
+                    break;
+                }
+            }
+            return total;
         }
     }
 
@@ -40,6 +58,19 @@ public class FamilyCounter implements Counter{
      */
     @Override
     public long count(double[] riceArray) {
-        return 0;
+        long total = 0;
+        List<Future<Long>> results = new ArrayList<>();
+        int part = riceArray.length / this.familyMember;
+        for (int i = 0; i < this.familyMember; i++) {
+            results.add(pool.submit(new CounterRiceTask(riceArray, i * part, (i + 1) * part)));
+        }
+        for (Future<Long> j : results) {
+            try {
+                total += j.get();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+        return total;
     }
 }

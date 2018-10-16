@@ -1,3 +1,8 @@
+/**
+ * 数米问题主体测试
+ *
+ * @author Wang
+ */
 public class Main {
 
     /**
@@ -8,7 +13,9 @@ public class Main {
     public static void main(String[] args) {
         long length = (long)1.2e8;
         double[] riceArray = createArray(length);
-        Counter counter = new FatherCounter();
+        //Counter counter = new FatherCounter();
+        Counter counter = new FamilyCounter();
+        //Counter counter = new TogetherCounter();
         long startTime = System.currentTimeMillis();
         long value = counter.count(riceArray);
         long endTime = System.currentTimeMillis();
